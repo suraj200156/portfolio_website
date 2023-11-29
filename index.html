@@ -10,9 +10,7 @@
     <h1>Distance Monitor</h1>
 
     <div id="distance-container">
-        <ul id="distance-list">
-            <!-- Distance data will be added here dynamically -->
-        </ul>
+        <p id="distance">Loading...</p>
     </div>
 
     <script>
@@ -21,28 +19,15 @@
             fetch('https://petfeeder200156-default-rtdb.asia-southeast1.firebasedatabase.app/.json')
                 .then(response => response.json())
                 .then(data => {
-                    if (data) {
-                        const distanceList = document.getElementById('distance-list');
-                        distanceList.innerHTML = ''; // Clear previous entries
-
-                        // Loop through the keys and add entries to the list
-                        Object.keys(data).forEach(key => {
-                            const value = data[key];
-
-                            // Assuming there's a 'distance' property, adjust this according to your data structure
-                            const distance = value.distance !== undefined ? value.distance : 'No distance available';
-
-                            const listItem = document.createElement('li');
-                            listItem.innerText = `Distance: ${distance} meters`;
-                            distanceList.appendChild(listItem);
-                        });
+                    if (data && data.distance) {
+                        document.getElementById('distance').innerText = 'Distance: ' + data.distance + ' meters';
                     } else {
-                        document.getElementById('distance-list').innerHTML = '<li>No data available</li>';
+                        document.getElementById('distance').innerText = 'No data available';
                     }
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
-                    document.getElementById('distance-list').innerHTML = '<li>Error fetching data</li>';
+                    document.getElementById('distance').innerText = 'Error fetching data';
                 });
         }
 
